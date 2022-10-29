@@ -2,7 +2,7 @@
   "name": "comrade-bot",
   "version": "1.0.0",
   "private": true,
-  "license": "MIT",
+  "license": "",
   "type": "module",
   "main": "build/main.js",
   "scripts": {
