@@ -8,14 +8,15 @@ WORKDIR /tmp/app
 COPY package.json .
 
 # Install dependencies
-RUN npm install
+RUN npm install -g pnpm
+RUN pnpm install
 
 # Move source files
 COPY src ./src
 COPY tsconfig.json   .
 
 # Build project
-RUN npm run build
+RUN pnpm run build
 
 ## production runner
 FROM node:lts-alpine as prod-runner
@@ -27,10 +28,10 @@ WORKDIR /app
 COPY --from=build-runner /tmp/app/package.json /app/package.json
 
 # Install dependencies
-RUN npm install --only=production
+RUN pnpm install --only=production
 
 # Move build files
 COPY --from=build-runner /tmp/app/build /app/build
 
 # Start bot
-CMD [ "npm", "run", "start" ]
+CMD [ "pnpm", "run", "start" ]

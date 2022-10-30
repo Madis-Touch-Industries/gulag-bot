@@ -1,12 +1,12 @@
 import { dirname, importx } from "@discordx/importer";
-import type { Interaction, Message } from "discord.js";
+import { ActivityType, Interaction, Message } from "discord.js";
 import { IntentsBitField } from "discord.js";
 import { Client } from "discordx";
-
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 export const bot = new Client({
   // To use only guild command
   // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
-
   // Discord intents
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -18,17 +18,14 @@ export const bot = new Client({
 
   // Debug logs are disabled in silent mode
   silent: false,
-
   // Configuration for @SimpleCommand
   simpleCommand: {
     prefix: "!",
   },
 });
-
 bot.once("ready", async () => {
   // Make sure all guilds are cached
   // await bot.guilds.fetch();
-
   // Synchronize applications commands with Discord
   await bot.initApplicationCommands();
 
@@ -40,7 +37,7 @@ bot.once("ready", async () => {
   //    ...bot.guilds.cache.map((g) => g.id)
   //  );
 
-  console.log("Bot started");
+  console.log("Gulag Bot started");
 });
 
 bot.on("interactionCreate", (interaction: Interaction) => {
@@ -68,4 +65,12 @@ async function run() {
   await bot.login(process.env.BOT_TOKEN);
 }
 
-run();
+run()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
