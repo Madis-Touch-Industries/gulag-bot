@@ -67,7 +67,7 @@ export class AddMining {
       console.log(e);
     }
 
-    // await interaction.reply(`Unit Name: ${unitName}, Position: ${posLoc}`);
+    await interaction.reply(`Unit Name: ${unitName}, Position: ${posLoc}`);
 
     return;
   }

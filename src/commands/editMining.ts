@@ -1,11 +1,5 @@
-import {
-  CommandInteraction,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  ActionRowBuilder,
-} from "discord.js";
-import { Discord, Slash } from "discordx";
+import { CommandInteraction, ApplicationCommandOptionType } from "discord.js";
+import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
 
 @Discord()
 export class EditMining {
@@ -13,37 +7,39 @@ export class EditMining {
     description: "Edit Mining Unit",
     name: "edit-unit",
   })
-  hello(interaction: CommandInteraction): void {
-    // Create the modal
-    const modal = new ModalBuilder()
-      .setTitle("Edit Mining Unit")
-      .setCustomId("EditMiningForm");
+  edit(interaction: CommandInteraction): void {}
+  iam(
+    @SlashChoice({ name: "Human", value: "human" })
+    @SlashChoice({ name: "Astronaut", value: "astronaut" })
+    @SlashChoice({ name: "Dev", value: "dev" })
+    @SlashOption({
+      description: "What are you?",
+      name: "what",
+      required: true,
+      type: ApplicationCommandOptionType.String,
+    })
+    what: string,
 
-    // Create text input fields
-    const miningUnitInputComponent = new TextInputBuilder()
-      .setCustomId("unitField")
-      .setLabel("Wha is the name of the Field?")
-      .setStyle(TextInputStyle.Short);
+    @SlashChoice(10, 20, 30)
+    @SlashOption({
+      description: "fuel",
+      name: "fuel",
+      required: true,
+      type: ApplicationCommandOptionType.String,
+    })
+    fuel: number,
 
-    const posInputComponent = new TextInputBuilder()
-      .setCustomId("posField")
-      .setLabel("Write down the field `::pos{0,0,0,0,0}`")
-      .setStyle(TextInputStyle.Short);
+    @SlashChoice("Patrol", "Diesel")
+    @SlashOption({
+      description: "type",
+      name: "type",
+      required: true,
+      type: ApplicationCommandOptionType.String,
+    })
+    type: number,
 
-    const row1 = new ActionRowBuilder<TextInputBuilder>().addComponents(
-      miningUnitInputComponent
-    );
-
-    const row2 = new ActionRowBuilder<TextInputBuilder>().addComponents(
-      posInputComponent
-    );
-
-    // Add action rows to form
-    modal.addComponents(row1, row2);
-
-    // --- snip ---
-
-    // Present the modal to the user
-    interaction.showModal(modal);
+    interaction: CommandInteraction
+  ) {
+    interaction.reply(`what: ${what}, fuel: ${fuel}, type: ${type}`);
   }
 }
