@@ -7,23 +7,25 @@
   "main": "build/main.js",
   "scripts": {
     "build": "tsc",
-    "build:changelog": "npx @discordx/changelog --root=src",
+    "build:changelog": "npx @discordx/changelog",
     "dev": "ts-node-esm src/main.ts",
     "start": "node build/main.js",
     "watch": "nodemon --exec ts-node-esm src/main.ts"
   },
   "dependencies": {
     "@discordx/importer": "^1.1.10",
-    "@discordx/pagination": "^3.2.0",
-    "@prisma/client": "^4.5.0",
-    "discord.js": "^14.4.0",
-    "discordx": "^11.3.0"
+    "@discordx/pagination": "^3.3.1",
+    "@prisma/client": "^4.6.1",
+    "@types/node-cron": "^3.0.5",
+    "discord.js": "^14.6.0",
+    "discordx": "^11.4.0"
   },
   "devDependencies": {
-    "@types/node": "^18.7.18",
+    "@types/node": "^18.11.9",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
-    "prisma": "^4.5.0",
+    "prisma": "^4.6.1",
+    "rome": "^10.0.1",
     "ts-node": "^10.9.1",
     "typescript": "4.8.3"
   },

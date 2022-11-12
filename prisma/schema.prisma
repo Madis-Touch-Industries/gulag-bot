@@ -10,10 +10,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  SUPER_LEGATE
+  LEGATE
+  OFFICER
+  MEMBER
+}
+
+enum Planet {
+  ALIOTH
+  ALIOTH_M4
+  ALIOTH_M1
+  MADIS
+  THADES
+  THADES_M1
+  NONE
+}
+
 model Unit {
   id           Int           @id @unique @default(autoincrement())
-  name         String        @unique
+  serverId     String?
+  name         String
   location     String?
+  channel      String?
   createdAt    DateTime?     @default(now())
   updatedAt    DateTime?     @updatedAt
   author       String
@@ -21,17 +40,21 @@ model Unit {
 }
 
 model Calibration {
-  id     Int     @id @unique @default(autoincrement())
-  name   String?
-  unit   Unit    @relation(fields: [unitId], references: [id])
-  unitId Int
+  id       Int       @id @unique @default(autoincrement())
+  user     User      @relation(fields: [userId], references: [id])
+  unit     Unit      @relation(fields: [unitId], references: [id])
+  time     DateTime? @default(now())
+  serverId String?
+  unitId   Int
+  userId   String
 }
 
 model User {
-  id         String      @id @unique @default(cuid())
-  user       String      @unique
-  role       Role        @default(MEMBER)
-  characters Character[]
+  id          String        @id @unique @default(cuid())
+  user        String        @unique
+  role        Role          @default(MEMBER)
+  characters  Character[]
+  Calibration Calibration[]
 }
 
 model Character {
@@ -41,9 +64,9 @@ model Character {
   userId String?
 }
 
-enum Role {
-  SUPER_LEGATE
-  LEGATE
-  OFFICER
-  MEMBER
+model Settings {
+  id       Int    @id @unique @default(autoincrement())
+  serverId String
+  setting  String
+  value    String
 }
